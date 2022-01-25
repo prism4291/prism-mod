@@ -21,26 +21,22 @@ public class PrismUtils {
         RenderHelper.disableStandardItemLighting();
     }
     public static boolean matchDamage(String dmg){
-        dmg=dmg.replaceAll("\u00a7k|\u00a7l|\u00a7m|\u00a7n|\u00a7o|\u00a7r","");
-        dmg=dmg.replaceAll("\u00a7.\u2727|\u00a7.\u2604|\u00a7.\u2764|\u00a7.\u265e","");
-        dmg=dmg.replaceAll("[\u2727\u2604\u2764\u265e]","");
-        //✧|☄|❤|♞|
-        return dmg.matches("((\u00a7.)*\\d)+(\u00a7.)*");
+        return damageDeleteCode(dmg).matches("\\d+");
+    }
+    public static String damageDeleteCode(String dmg){
+    //✧|☄|❤|♞|
+    dmg=dmg.replaceAll("\u00a7.","");
+    return dmg.replaceAll("[\u2727\u2604\u2764\u265e]","");
     }
     public static String damageCompactor(String dmg){
-        List<String> numData= Arrays.asList(dmg.split("((\u00a7.)*\\d)"));
-        List<String> numList=new ArrayList<>();
-        for (String num : numData) {
-            if (num.matches(".*\\d")) {
-                numList.add(num.substring(num.length() - 1));
-            }
-        }
-        if(numList.size()<1){
+        dmg=damageDeleteCode(dmg);
+        int l=dmg.length();
+        if(l<1){
             return "error";
-        }else if(numList.size()<4){
-            return String.join("",numList);
-        }else if(numList.size()<13){
-            String res="\u00a7f"+String.join("",numList.subList(0,(numList.size()-1)%3+1))+(numList.size()%3==0?"":"."+String.join("",numList.subList((numList.size()-1)%3+1,3)));
+        }else if(l<4){
+            return "\u00a7f"+dmg;
+        }else if(l<13){
+            String res="\u00a7f"+dmg.substring(0,(l-1)%3+1)+l%3==0?"":"."+dmg.substring((l-1)%3+1,3);
             res+= new String[]{"k", "m", "b"}[(numList.size()-4)/3];
             return res;
         }else{
