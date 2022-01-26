@@ -14,7 +14,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 
-@Mod(modid = PrismMod.MODID, version = PrismMod.VERSION,canBeDeactivated=true)
+//canBeDeactivated=true
+@Mod(modid = PrismMod.MODID, version = PrismMod.VERSION)
 public class PrismMod {
     public static final String MODID = "prism_new_mod";
     public static final String VERSION = "1.8";
