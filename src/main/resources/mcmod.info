@@ -2,7 +2,7 @@
 {
   "modid": "prism_new_mod",
   "name": "Prism Mod",
-  "description": "/prism [enable/disable]\n/prism test [enable/disable]\n/prism inv <x> <y> <size>\n1.0:first version\n1.1:add enable/disable\n1.2:only works for number\n1.3:make config file\n1.4:add remaining text\n1.5:removed text and add limit time\n1.6:add inventory\n1.7:edit inv location\n1.8:fix bugs",
+  "description": "1.0:first version\n1.1:add enable/disable\n1.2:only works for number\n1.3:make config file\n1.4:add remaining text\n1.5:removed text and add limit time\n1.6:add inventory\n1.7:edit inv location\n1.8:fix bugs",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",

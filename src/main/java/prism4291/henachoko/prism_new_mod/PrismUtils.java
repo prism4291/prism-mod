@@ -36,8 +36,8 @@ public class PrismUtils {
         }else if(l<4){
             return "\u00a7f"+dmg;
         }else if(l<13){
-            String res="\u00a7f"+dmg.substring(0,(l-1)%3+1)+l%3==0?"":"."+dmg.substring((l-1)%3+1,3);
-            res+= new String[]{"k", "m", "b"}[(numList.size()-4)/3];
+            String res="\u00a7f"+dmg.substring(0,(l-1)%3+1)+(l%3==0?"":"."+dmg.substring((l-1)%3+1,3));
+            res+= new String[]{"k", "m", "b"}[(l-4)/3];
             return res;
         }else{
             return "error";
