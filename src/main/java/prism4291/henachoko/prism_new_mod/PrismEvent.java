@@ -10,15 +10,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
+import prism4291.henachoko.prism_new_mod.Config.PrismConfig;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PrismEventTest {
+public class PrismEvent {
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
@@ -124,10 +126,16 @@ public class PrismEventTest {
 
             int x = (i % 9);
             int y = (i / 9);
+
+            double invSize=1;
+            double invX=0;
+            double invY=0;
+
+
             GlStateManager.pushMatrix();
-            GlStateManager.translate((x * 16)*PrismConfig.invSize+PrismConfig.invX, (y * 16)*PrismConfig.invSize+PrismConfig.invY, 0);
+            GlStateManager.translate((x * 16)*invX, (y * 16)*invY, 0);
             GlStateManager.enableBlend();
-            GlStateManager.scale(PrismConfig.invSize,PrismConfig.invSize,1);
+            GlStateManager.scale(invSize,invSize,1);
             PrismUtils.drawItemStackWithText(stack, 0, 0, String.valueOf(stack.stackSize));
             GlStateManager.popMatrix();
 
@@ -148,5 +156,12 @@ public class PrismEventTest {
         GlStateManager.scale(1,1,0.5);
         GlStateManager.popMatrix();
         */
+
+    }
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.modID.equals(PrismMod.MODID)) {
+            PrismConfig.syncConfig(false);
+        }
     }
 }
