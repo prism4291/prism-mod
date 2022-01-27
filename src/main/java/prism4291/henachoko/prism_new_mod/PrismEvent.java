@@ -76,7 +76,6 @@ public class PrismEvent {
         }
         long now= System.currentTimeMillis();
         for (PrismVariable.damageIndicator indicator : PrismVariable.armorStandList) {
-            System.out.println(now-indicator.time);
             if (now-indicator.time > PrismConfig.damageIndicatorLifespan) {
                 continue;
             }
