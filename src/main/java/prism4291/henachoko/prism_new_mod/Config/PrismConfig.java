@@ -13,6 +13,11 @@ public class PrismConfig {
     private static Configuration config;
     public static final String MAIN_SETTINGS = "prism_settings";
 
+    public static String hypixelApiKey;
+    public static boolean modEnabled;
+    public static int invX;
+    public static int invY;
+
     public static void init(File file) {
         config = new Configuration(file);
         syncConfig(true);
@@ -23,13 +28,14 @@ public class PrismConfig {
             config.load();
         }
         config.setCategoryPropertyOrder(MAIN_SETTINGS, addMainSetting());
+        config.setCategoryPropertyOrder(MAIN_SETTINGS, addSubSetting());
         if (config.hasChanged())
         {
             config.save();
         }
     }
-    public static String hypixelApiKey;
-    public static boolean modEnabled;
+
+
     private static List<String> addMainSetting() {
         Property prop;
         List<String> propOrder = new ArrayList<>();
@@ -44,10 +50,28 @@ public class PrismConfig {
 
         return propOrder;
     }
+    private static List<String> addSubSetting() {
+        Property prop;
+        List<String> propOrder = new ArrayList<>();
+
+        prop = getProperty(MAIN_SETTINGS, "inventory X", 0);
+        invX = prop.getInt();
+        propOrder.add(prop.getName());
+
+        prop = getProperty(MAIN_SETTINGS, "inventory Y", 0);
+        invY = prop.getInt();
+        propOrder.add(prop.getName());
+
+        return propOrder;
+    }
+
     public static Property getProperty(String category, String name, boolean defaultValue) {
         return config.get(category, name, defaultValue);
     }
     public static Property getProperty(String category, String name, String defaultValue) {
+        return config.get(category, name, defaultValue);
+    }
+    public static Property getProperty(String category, String name, int defaultValue) {
         return config.get(category, name, defaultValue);
     }
     public static List<IConfigElement> getConfigElements()
