@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
+import prism4291.henachoko.prism_new_mod.Config.PrismConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,6 +56,8 @@ public class PrismUtils {
     public static String damageCompactor(String dmg){
         dmg=damageDeleteCode(dmg);
         int l=dmg.length();
+        //String cc=PrismConfig.damageCode+"777aaaeeeccc".substring(PrismConfig.damageCode.length());
+        //String res="\u00a7"+ cc.substring()
         if(l<1){
             return "error";
         }else if(l<4){
