@@ -3,7 +3,6 @@ package prism4291.henachoko.prism_new_mod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.item.ItemStack;
@@ -14,11 +13,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 import prism4291.henachoko.prism_new_mod.Config.PrismConfig;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class PrismEvent {
 
@@ -30,6 +25,9 @@ public class PrismEvent {
         }
         PrismVariable.uuidList.add(event.entity.getUniqueID());
         if (!PrismConfig.modEnabled) {
+            return;
+        }
+        if(!PrismConfig.damageEnabled){
             return;
         }
         if (event.entity instanceof EntityArmorStand) {
@@ -55,8 +53,7 @@ public class PrismEvent {
                 player.addChatMessage(new ChatComponentText(msg));
             }
             */
-            PrismVariable.armorStandList.add(armorStand);
-            PrismVariable.armorStandTime.put(armorStand.getUniqueID(), 0);
+            PrismVariable.armorStandList.add(new PrismVariable.damageIndicator(armorStand));
 
 
         }
@@ -65,7 +62,11 @@ public class PrismEvent {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void ev3(RenderWorldLastEvent event) {
+        PrismVariable.ticks=event.partialTicks;
         if (!PrismConfig.modEnabled) {
+            return;
+        }
+        if(!PrismConfig.damageEnabled){
             return;
         }
         Minecraft mc = Minecraft.getMinecraft();
@@ -73,29 +74,17 @@ public class PrismEvent {
         if (player == null) {
             return;
         }
-        for (EntityArmorStand armorStand : PrismVariable.armorStandList) {
-            int t = PrismVariable.armorStandTime.get(armorStand.getUniqueID());
-            if (t > 2000) {
+        long now= System.currentTimeMillis();
+        for (PrismVariable.damageIndicator indicator : PrismVariable.armorStandList) {
+            System.out.println(now-indicator.time);
+            if (now-indicator.time > PrismConfig.damageIndicatorLifespan) {
                 continue;
             }
-            PrismVariable.armorStandTime.put(armorStand.getUniqueID(), t + 1);
-            double x = (armorStand.posX - player.lastTickPosX) + ((armorStand.posX - player.posX) - (armorStand.posX - player.lastTickPosX)) * event.partialTicks;
-            double y = (armorStand.posY + t * 0.005 - player.lastTickPosY) + ((armorStand.posY + t * 0.005 - player.posY) - (armorStand.posY + t * 0.005 - player.lastTickPosY)) * event.partialTicks;
-            double z = (armorStand.posZ - player.lastTickPosZ) + ((armorStand.posZ - player.posZ) - (armorStand.posZ - player.lastTickPosZ)) * event.partialTicks;
-            RenderManager renderManager = mc.getRenderManager();
-            String text = PrismUtils.damageCompactor(armorStand.getCustomNameTag());
-            int width = mc.fontRendererObj.getStringWidth(text) / 2;
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(x, y, z);
-            GL11.glNormal3f(0f, 1f, 0f);
-            GlStateManager.rotate(-renderManager.playerViewY, 0f, 1f, 0f);
-            GlStateManager.rotate(renderManager.playerViewX, 1f, 0f, 0f);
-            GlStateManager.scale(-0.03f, -0.03f, -0.03f);
-            GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-            mc.fontRendererObj.drawString(text, -width, 0, 0xffffff);
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
+
+            //indicator.indicatorY+=(now-indicator.lastTime)*0.001;
+            indicator.lastTime=now;
+            PrismUtils.drawIndicator(indicator.indicatorX, indicator.indicatorY, indicator.indicatorZ, indicator.text);
+
 
         }
 
@@ -105,6 +94,9 @@ public class PrismEvent {
     @SubscribeEvent
     public void ev4(RenderGameOverlayEvent.Text event) {
         if (!PrismConfig.modEnabled) {
+            return;
+        }
+        if(!PrismConfig.invEnabled){
             return;
         }
         if(event.isCanceled()){
@@ -127,13 +119,13 @@ public class PrismEvent {
             int x = (i % 9);
             int y = (i / 9);
 
-            double invSize=1;
-            double invX=0;
-            double invY=0;
+            double invSize=PrismConfig.invSize;
+            int invX=PrismConfig.invX;
+            int invY=PrismConfig.invY;
 
 
             GlStateManager.pushMatrix();
-            GlStateManager.translate((x * 16)*invX, (y * 16)*invY, 0);
+            GlStateManager.translate((x * 16*invSize)+invX, (y * 16*invSize)+invY, 0);
             GlStateManager.enableBlend();
             GlStateManager.scale(invSize,invSize,1);
             PrismUtils.drawItemStackWithText(stack, 0, 0, String.valueOf(stack.stackSize));

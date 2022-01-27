@@ -15,8 +15,12 @@ public class PrismConfig {
 
     public static String hypixelApiKey;
     public static boolean modEnabled;
+    public static float damageIndicatorLifespan;
+    public static boolean damageEnabled;
+    public static boolean invEnabled;
     public static int invX;
     public static int invY;
+    public static double invSize;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -41,12 +45,45 @@ public class PrismConfig {
 
         prop = getProperty(Configuration.CATEGORY_GENERAL, "Enabled", true);
         modEnabled = prop.getBoolean();
+        prop.comment="if events(except config event) is enabled";
         propOrder.add(prop.getName());
 
         prop = getProperty(Configuration.CATEGORY_GENERAL, "Hypixel API Key", "");
         hypixelApiKey = prop.getString();
+        prop.comment="not used";
         propOrder.add(prop.getName());
 
+        prop = getProperty(Configuration.CATEGORY_GENERAL, "Enable Damage Indicator", true);
+        damageEnabled = prop.getBoolean();
+        prop.comment="you can see Damage";
+        propOrder.add(prop.getName());
+
+        prop = getProperty(Configuration.CATEGORY_GENERAL, "Damage Indicator lifespan millisecond", 20000);
+        damageIndicatorLifespan = prop.getInt();
+        prop.comment="20000 is 20 seconds";
+        propOrder.add(prop.getName());
+
+
+
+        prop = getProperty(Configuration.CATEGORY_GENERAL, "Inventory Enabled", true);
+        invEnabled = prop.getBoolean();
+        prop.comment="hud inventory";
+        propOrder.add(prop.getName());
+
+        prop = getProperty(Configuration.CATEGORY_GENERAL, "invX", 0);
+        invX = prop.getInt();
+        prop.comment="x";
+        propOrder.add(prop.getName());
+
+        prop = getProperty(Configuration.CATEGORY_GENERAL, "invY", 0);
+        invY = prop.getInt();
+        prop.comment="y";
+        propOrder.add(prop.getName());
+
+        prop = getProperty(Configuration.CATEGORY_GENERAL, "invSize", 1d);
+        invSize = prop.getDouble();
+        prop.comment="size";
+        propOrder.add(prop.getName());
 
 
         return propOrder;
@@ -63,6 +100,9 @@ public class PrismConfig {
         return config.get(category, name, defaultValue);
     }
     public static Property getProperty(String category, String name, int defaultValue) {
+        return config.get(category, name, defaultValue);
+    }
+    public static Property getProperty(String category, String name, double defaultValue) {
         return config.get(category, name, defaultValue);
     }
 

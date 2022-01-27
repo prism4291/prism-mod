@@ -6,7 +6,23 @@ import net.minecraft.entity.item.EntityArmorStand;
 
 public class PrismVariable {
     public static List<UUID> uuidList=new ArrayList<>();
-    public static List<EntityArmorStand> armorStandList=new ArrayList<>();
-    public static Map<UUID,Integer> armorStandTime=new HashMap<>();
+    public static List<damageIndicator> armorStandList=new ArrayList<>();
+    public static float ticks=0;
     public static int t=0;
+    static class damageIndicator{
+        double indicatorX;
+        double indicatorY;
+        double indicatorZ;
+        long time;
+        long lastTime;
+        String text;
+        damageIndicator(EntityArmorStand armorStand){
+            indicatorX=armorStand.posX;
+            indicatorY=armorStand.posY;
+            indicatorZ=armorStand.posZ;
+            time=System.currentTimeMillis();
+            lastTime=System.currentTimeMillis();
+            text=PrismUtils.damageCompactor(armorStand.getCustomNameTag());
+        }
+    }
 }
