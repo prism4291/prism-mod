@@ -56,14 +56,14 @@ public class PrismUtils {
     public static String damageCompactor(String dmg){
         dmg=damageDeleteCode(dmg);
         int l=dmg.length();
-        //String cc=PrismConfig.damageCode+"777aaaeeeccc".substring(PrismConfig.damageCode.length());
-        //String res="\u00a7"+ cc.substring()
+        String cc=PrismConfig.damageCode+"777aaaeeeccc".substring(PrismConfig.damageCode.length());
+        String res="\u00a7"+ cc.substring(l-1,l)
         if(l<1){
             return "error";
         }else if(l<4){
-            return "\u00a7f"+dmg;
+            return res+dmg;
         }else if(l<13){
-            String res="\u00a7f"+dmg.substring(0,(l-1)%3+1)+(l%3==0?"":"."+dmg.substring((l-1)%3+1,3));
+            res+=dmg.substring(0,(l-1)%3+1)+(l%3==0?"":"."+dmg.substring((l-1)%3+1,3));
             res+= new String[]{"k", "m", "b"}[(l-4)/3];
             return res;
         }else{
