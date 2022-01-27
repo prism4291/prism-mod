@@ -9,9 +9,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class PrismConfig {
     private static Configuration config;
-    public static final String MAIN_SETTINGS = "prism_settings";
 
     public static String hypixelApiKey;
     public static boolean modEnabled;
@@ -23,48 +23,39 @@ public class PrismConfig {
         syncConfig(true);
     }
     public static void syncConfig(boolean load) {
-        if (!config.isChild && load)
-        {
+        if (!config.isChild && load) {
             config.load();
         }
-        config.setCategoryPropertyOrder(MAIN_SETTINGS, addMainSetting());
-        config.setCategoryPropertyOrder(MAIN_SETTINGS, addSubSetting());
-        if (config.hasChanged())
-        {
+        config.setCategoryPropertyOrder(Configuration.CATEGORY_GENERAL,addConfig());
+        //config.setCategoryPropertyOrder(MAIN_SETTINGS, addMainSetting());
+        //config.setCategoryPropertyOrder(MAIN_SETTINGS, addSubSetting());
+        if (config.hasChanged()) {
             config.save();
         }
     }
 
 
-    private static List<String> addMainSetting() {
+    private static List<String> addConfig() {
         Property prop;
         List<String> propOrder = new ArrayList<>();
 
-        prop = getProperty(MAIN_SETTINGS, "Hypixel API Key", "");
-        hypixelApiKey = prop.getString();
-        propOrder.add(prop.getName());
-
-        prop = getProperty(MAIN_SETTINGS, "Enabled", true);
+        prop = getProperty(Configuration.CATEGORY_GENERAL, "Enabled", true);
         modEnabled = prop.getBoolean();
         propOrder.add(prop.getName());
 
-        return propOrder;
-    }
-    private static List<String> addSubSetting() {
-        Property prop;
-        List<String> propOrder = new ArrayList<>();
-
-        prop = getProperty(MAIN_SETTINGS, "inventory X", 0);
-        invX = prop.getInt();
+        prop = getProperty(Configuration.CATEGORY_GENERAL, "Hypixel API Key", "");
+        hypixelApiKey = prop.getString();
         propOrder.add(prop.getName());
 
-        prop = getProperty(MAIN_SETTINGS, "inventory Y", 0);
-        invY = prop.getInt();
-        propOrder.add(prop.getName());
+
 
         return propOrder;
     }
 
+    public static List<IConfigElement> getConfigElements()
+    {
+        return new ArrayList<>(new ConfigElement(config.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements());
+    }
     public static Property getProperty(String category, String name, boolean defaultValue) {
         return config.get(category, name, defaultValue);
     }
@@ -74,10 +65,5 @@ public class PrismConfig {
     public static Property getProperty(String category, String name, int defaultValue) {
         return config.get(category, name, defaultValue);
     }
-    public static List<IConfigElement> getConfigElements()
-    {
-        List<IConfigElement> list = new ArrayList<>();
-        list.add(new ConfigElement(config.getCategory(MAIN_SETTINGS)));
-        return list;
-    }
+
 }

@@ -158,6 +158,7 @@ public class PrismEvent {
         */
 
     }
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
         if (event.modID.equals(PrismMod.MODID)) {
