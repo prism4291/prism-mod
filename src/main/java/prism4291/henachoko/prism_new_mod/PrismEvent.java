@@ -80,7 +80,7 @@ public class PrismEvent {
                 continue;
             }
 
-            indicator.indicatorY+=Math.cos((now-indicator.lastTime)*0.001)*0.01;
+            indicator.indicatorY+=(Math.cos((now-indicator.time)*0.001)+3)*0.001;
             indicator.lastTime=now;
             PrismUtils.drawIndicator(indicator.indicatorX, indicator.indicatorY, indicator.indicatorZ, indicator.text);
 

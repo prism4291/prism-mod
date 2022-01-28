@@ -20,7 +20,7 @@ public class PrismVariable {
         String text;
         damageIndicator(EntityArmorStand armorStand){
             indicatorX=armorStand.posX+(random.nextDouble()-0.5);
-            indicatorY=armorStand.posY+(random.nextDouble()-0.5);
+            indicatorY=armorStand.posY;
             indicatorZ=armorStand.posZ+(random.nextDouble()-0.5);
             time=System.currentTimeMillis();
             lastTime=System.currentTimeMillis();
