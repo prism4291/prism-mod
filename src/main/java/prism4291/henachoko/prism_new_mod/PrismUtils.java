@@ -46,7 +46,14 @@ public class PrismUtils {
         RenderHelper.disableStandardItemLighting();
     }
     public static boolean matchDamage(String dmg){
-        return damageDeleteCode(dmg).matches("\\d+");
+        if(!damageDeleteCode(dmg).matches("\\d+")){
+            return false;
+        }
+        String cc=PrismConfig.damageCode+"777aaaeeeccc".substring(PrismConfig.damageCode.length());
+        if('-'==cc.charAt(damageDeleteCode(dmg).length()-1)){
+            return false;
+        }
+        return true;
     }
     public static String damageDeleteCode(String dmg){
     //✧|☄|❤|♞|

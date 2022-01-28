@@ -59,9 +59,9 @@ public class PrismConfig {
         prop.comment="you can see Damage";
         propOrder.add(prop.getName());
 
-        prop = getProperty(Configuration.CATEGORY_GENERAL, "Damage Indicator Color", "777aaaeeeccc");
+        prop = getProperty(Configuration.CATEGORY_GENERAL, "Damage Indicator Color", "---a956dbccc");
         damageCode = prop.getString();
-        prop.comment="color code each damage(12 length 0-f String btw 10 length is enough)";
+        prop.comment="color code each damage(12 length 0-f String or - to ignore\nbtw 10 length is enough)";
         propOrder.add(prop.getName());
 
         prop = getProperty(Configuration.CATEGORY_GENERAL, "Damage Indicator lifespan millisecond", 20000);
