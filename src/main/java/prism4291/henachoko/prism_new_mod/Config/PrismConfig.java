@@ -22,6 +22,7 @@ public class PrismConfig {
     public static int invX;
     public static int invY;
     public static double invSize;
+    public static boolean gridEnabled;
 
     public static void init(File file) {
         config = new Configuration(file);
@@ -91,6 +92,10 @@ public class PrismConfig {
         prop.comment="size";
         propOrder.add(prop.getName());
 
+        prop=getProperty(Configuration.CATEGORY_GENERAL, "Grid Enabled", true);
+        gridEnabled = prop.getBoolean();
+        prop.comment="grid the player";
+        propOrder.add(prop.getName());
 
         return propOrder;
     }

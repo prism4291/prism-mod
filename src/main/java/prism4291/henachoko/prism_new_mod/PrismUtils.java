@@ -4,8 +4,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import prism4291.henachoko.prism_new_mod.Config.PrismConfig;
@@ -15,6 +17,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PrismUtils {
+    public static void drawLine(double x,double y,double z,double x2,double y2,double z2){
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glColor4d(0.5,0.5,0.5,0.5);
+        GL11.glBegin(GL11.GL_LINE_LOOP);
+        GL11.glVertex3d(x,y,z);
+        GL11.glVertex3d(x2,y2,z2);
+        GL11.glEnd();
+        GL11.glPopAttrib();
+    }
     public static void drawIndicator(double x,double y,double z,String text){
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayerSP player = mc.thePlayer;

@@ -12,7 +12,7 @@ import java.io.File;
 @Mod(modid = PrismMod.MODID, version = PrismMod.VERSION,clientSideOnly = true,guiFactory = "prism4291.henachoko.prism_new_mod.Config.ConfigGuiFactory")
 public class PrismMod {
     public static final String MODID = "prism_new_mod";
-    public static final String VERSION = "1.10";
+    public static final String VERSION = "1.11";
 
     @Mod.EventHandler
     public void init(FMLPreInitializationEvent event) {

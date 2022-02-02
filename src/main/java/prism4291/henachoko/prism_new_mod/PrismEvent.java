@@ -5,14 +5,15 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 import prism4291.henachoko.prism_new_mod.Config.PrismConfig;
 
 public class PrismEvent {
@@ -86,7 +87,89 @@ public class PrismEvent {
 
 
         }
+        /*
+        PrismUtils.drawLine(player.posX,player.posY,player.posZ,player.posX-1,player.posY,player.posZ-1);
+        PrismUtils.drawLine(player.posX,player.posY,player.posZ,player.posX+1,player.posY,player.posZ-1);
+        PrismUtils.drawLine(player.posX,player.posY,player.posZ,player.posX+1,player.posY,player.posZ+1);
+        PrismUtils.drawLine(player.posX,player.posY,player.posZ,player.posX-1,player.posY,player.posZ+1);
+        */
 
+
+
+
+    }
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void ev3_2(RenderWorldLastEvent event) {
+        if (!PrismConfig.modEnabled) {
+            return;
+        }
+        if(!PrismConfig.gridEnabled){
+            return;
+        }
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityPlayerSP player = mc.thePlayer;
+        if (player == null) {
+            return;
+        }
+        double l=0;
+        /*
+        PrismUtils.drawLine(0,0.01,0,0.3,0.01,0.3);
+        PrismUtils.drawLine(0,0.01,0,-0.3,0.01,0.3);
+        PrismUtils.drawLine(0,0.01,0,-0.3,0.01,-0.3);
+        PrismUtils.drawLine(0,0.01,0,0.3,0.01,-0.3);
+        */
+        if(player.onGround){
+            PrismVariable.groundY=player.posY;
+        }
+        //double dy=-(player.posY-PrismVariable.groundY);
+        double dy=0;
+        GL11.glPushMatrix();
+        PrismUtils.drawLine(0.3+l,0.01+dy,0.3,-0.3-l,0.01+dy,0.3);
+        PrismUtils.drawLine(-0.3,0.01+dy,0.3+l,-0.3,0.01+dy,-0.3-l);
+        PrismUtils.drawLine(-0.3-l,0.01+dy,-0.3,0.3+l,0.01+dy,-0.3);
+        PrismUtils.drawLine(0.3,0.01+dy,-0.3-l,0.3,0.01+dy,0.3+l);
+        /*
+        PrismUtils.drawLine(0.3,0.01-l,0.3,0.3,0.01+l,0.3);
+        PrismUtils.drawLine(-0.3,0.01-l,0.3,-0.3,0.01+l,0.3);
+        PrismUtils.drawLine(-0.3,0.01-l,-0.3,-0.3,0.01+l,-0.3);
+        PrismUtils.drawLine(0.3,0.01-l,-0.3,0.3,0.01+l,-0.3);
+
+         */
+        GL11.glPopMatrix();
+        l=1.5;
+        GL11.glPushMatrix();
+        double dx=-(player.posX%1>0.5?player.posX%1-0.5:player.posX%1+0.5);
+
+        double dz=-(player.posZ%1>0.5?player.posZ%1-0.5:player.posZ%1+0.5);
+        PrismUtils.drawLine(0.3+l,0.01+dy,0.5+dz,-0.3-l,0.01+dy,0.5+dz);
+        PrismUtils.drawLine(-0.5+dx,0.01+dy,0.3+l,-0.5+dx,0.01+dy,-0.3-l);
+        PrismUtils.drawLine(-0.3-l,0.01+dy,-0.5+dz,0.3+l,0.01+dy,-0.5+dz);
+        PrismUtils.drawLine(0.5+dx,0.01+dy,-0.3-l,0.5+dx,0.01+dy,0.3+l);
+        dx+=1;
+        dz+=1;
+        if(dz<1) {
+            PrismUtils.drawLine(0.3 + l, 0.01 + dy, 0.5 + dz, -0.3 - l, 0.01 + dy, 0.5 + dz);
+        }
+        PrismUtils.drawLine(-0.5+dx,0.01+dy,0.3+l,-0.5+dx,0.01+dy,-0.3-l);
+        PrismUtils.drawLine(-0.3-l,0.01+dy,-0.5+dz,0.3+l,0.01+dy,-0.5+dz);
+
+        if(dx<1) {
+            PrismUtils.drawLine(0.5 + dx, 0.01 + dy, -0.3 - l, 0.5 + dx, 0.01 + dy, 0.3 + l);
+        }
+        dx-=2;
+        dz-=2;
+        PrismUtils.drawLine(0.3+l,0.01+dy,0.5+dz,-0.3-l,0.01+dy,0.5+dz);
+        if(dx>1) {
+            PrismUtils.drawLine(-0.5 + dx, 0.01 + dy, 0.3 + l, -0.5 + dx, 0.01 + dy, -0.3 - l);
+        }
+        if(dz>1) {
+            PrismUtils.drawLine(-0.3 - l, 0.01 + dy, -0.5 + dz, 0.3 + l, 0.01 + dy, -0.5 + dz);
+        }
+        PrismUtils.drawLine(0.5+dx,0.01+dy,-0.3-l,0.5+dx,0.01+dy,0.3+l);
+
+
+        GL11.glPopMatrix();
     }
 
     @SideOnly(Side.CLIENT)

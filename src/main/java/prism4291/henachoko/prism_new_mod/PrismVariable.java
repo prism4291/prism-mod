@@ -27,4 +27,5 @@ public class PrismVariable {
             text=PrismUtils.damageCompactor(armorStand.getCustomNameTag());
         }
     }
+    static double groundY=0;
 }
